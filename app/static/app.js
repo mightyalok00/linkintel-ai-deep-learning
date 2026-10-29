@@ -130,6 +130,7 @@ function setupAnalyzeForm() {
 
     submitBtn.disabled = true;
     submitBtn.innerHTML = `<span class="spinner"></span> Dispatching async discovery worker...`;
+    setRunWorkflowButtonsRunning();
     resultsContainer.style.display = 'none';
 
     if (progressWidget) {
@@ -193,6 +194,7 @@ function setupAnalyzeForm() {
     } finally {
       submitBtn.disabled = false;
       submitBtn.innerHTML = `🚀 Find 100 Backlinks (Live Web, Image &amp; PDF)`;
+      resetRunWorkflowButtons();
     }
   });
 
@@ -693,7 +695,6 @@ function setupWorkflowFeature() {
   const desktopBtn = document.getElementById('workflow-btn-desktop');
   const mobileBtn = document.getElementById('workflow-btn-mobile');
   const inlineBtn = document.getElementById('workflow-btn-inline');
-  const launchBtn = document.getElementById('workflow-launch-btn');
   const stepperNodes = document.querySelectorAll('.stepper-node');
   const stepCards = document.querySelectorAll('.workflow-step-card');
   const actionBtns = document.querySelectorAll('.workflow-action-btn');
@@ -749,19 +750,74 @@ function setupWorkflowFeature() {
     });
   });
 
-  // Launch guided discovery workflow button
-  if (launchBtn) {
-    launchBtn.addEventListener('click', () => {
-      closeWorkflow();
-      switchToTab('tab-analyze');
-      const form = document.getElementById('analyze-form');
-      if (form) {
-        form.scrollIntoView({ behavior: 'smooth' });
-        const input = document.getElementById('website_url');
-        if (input) input.focus();
+  // Execute Full Automated Workflow
+  const executeWorkflowRun = () => {
+    closeWorkflow();
+    switchToTab('tab-analyze');
+
+    const websiteInput = document.getElementById('website_url');
+    const categoryInput = document.getElementById('category');
+    const keywordsInput = document.getElementById('keywords');
+    const form = document.getElementById('analyze-form');
+
+    if (websiteInput && !websiteInput.value.trim()) {
+      websiteInput.value = 'https://phoenixphysio.co.uk';
+    }
+    if (categoryInput && !categoryInput.value.trim()) {
+      categoryInput.value = 'physiotherapy';
+    }
+    if (keywordsInput && !keywordsInput.value.trim()) {
+      keywordsInput.value = 'sports injury clinic, rehabilitation, wellness';
+    }
+
+    if (form) {
+      if (typeof form.requestSubmit === 'function') {
+        form.requestSubmit();
+      } else {
+        form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
       }
-    });
-  }
+
+      setTimeout(() => {
+        const progressWidget = document.getElementById('scan-progress-widget');
+        if (progressWidget) {
+          progressWidget.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 100);
+    }
+  };
+
+  // Wire all Run Workflow buttons across mobile, desktop, banner, and modal
+  const runWorkflowButtons = [
+    document.getElementById('run-workflow-btn-desktop'),
+    document.getElementById('run-workflow-btn-mobile'),
+    document.getElementById('run-workflow-btn-banner'),
+    document.getElementById('run-workflow-btn-modal'),
+  ];
+
+  runWorkflowButtons.forEach(btn => {
+    if (btn) {
+      btn.addEventListener('click', executeWorkflowRun);
+    }
+  });
+}
+
+function setRunWorkflowButtonsRunning() {
+  document.querySelectorAll('.run-workflow-btn').forEach(btn => {
+    btn.disabled = true;
+    if (!btn.dataset.originalHtml) {
+      btn.dataset.originalHtml = btn.innerHTML;
+    }
+    btn.innerHTML = `<span class="spinner" style="width: 13px; height: 13px; border-width: 2px;"></span> Running Pipeline...`;
+  });
+}
+
+function resetRunWorkflowButtons() {
+  document.querySelectorAll('.run-workflow-btn').forEach(btn => {
+    btn.disabled = false;
+    if (btn.dataset.originalHtml) {
+      btn.innerHTML = btn.dataset.originalHtml;
+    }
+  });
 }
 
 function switchToTab(tabId) {

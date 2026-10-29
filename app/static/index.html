@@ -22,11 +22,16 @@
             <span class="brand-badge">Intelligence Suite</span>
           </div>
         </a>
-        <!-- Mobile Workflow Trigger Button -->
-        <button id="workflow-btn-mobile" class="workflow-trigger-btn mobile-only" title="Open Interactive Pipeline Workflow" aria-label="Open Pipeline Workflow">
-          <span class="workflow-btn-pulse">⚡</span>
-          <span>Workflow</span>
-        </button>
+        <!-- Mobile Actions -->
+        <div class="mobile-workflow-actions mobile-only">
+          <button id="run-workflow-btn-mobile" class="btn btn-sm run-workflow-btn" title="Run Full Pipeline Workflow">
+            ▶ Run
+          </button>
+          <button id="workflow-btn-mobile" class="workflow-trigger-btn" title="Open Interactive Pipeline Guide" aria-label="Open Pipeline Workflow">
+            <span class="workflow-btn-pulse">⚡</span>
+            <span>Guide</span>
+          </button>
+        </div>
       </div>
 
       <nav class="nav-tabs">
@@ -37,10 +42,14 @@
       </nav>
 
       <div class="header-actions">
-        <!-- Laptop / Desktop Workflow Trigger Button -->
+        <!-- Laptop / Desktop Workflow Buttons -->
+        <button id="run-workflow-btn-desktop" class="btn btn-primary run-workflow-btn desktop-only" title="Execute Full 4-Stage Workflow Immediately">
+          <span>▶ Run Workflow</span>
+        </button>
+
         <button id="workflow-btn-desktop" class="workflow-trigger-btn desktop-only" title="Open Interactive Pipeline Workflow">
           <span class="workflow-btn-pulse">⚡</span>
-          <span class="workflow-btn-text">Pipeline Workflow</span>
+          <span class="workflow-btn-text">Pipeline Guide</span>
         </button>
 
         <div class="system-pill">
@@ -59,13 +68,18 @@
       <!-- Workflow Interactive Banner -->
       <div class="workflow-banner glass-card">
         <div class="workflow-banner-content">
-          <div class="workflow-banner-badge">⚡ Interactive Pipeline</div>
-          <h3 class="workflow-banner-title">Automated 4-Stage SEO Intelligence Workflow</h3>
-          <p class="workflow-banner-desc">From live multi-vector web discovery &amp; ML spam filtering to verified link inspection &amp; Gemini outreach.</p>
+          <div class="workflow-banner-badge">⚡ Automated Intelligence Engine</div>
+          <h3 class="workflow-banner-title">4-Stage Automated SEO Intelligence Pipeline</h3>
+          <p class="workflow-banner-desc">Live multi-vector web discovery &amp; ML spam filtering to verified link inspection &amp; Gemini outreach.</p>
         </div>
-        <button id="workflow-btn-inline" class="btn btn-sm btn-secondary workflow-btn-inline">
-          ⚡ Explore Step-by-Step Workflow
-        </button>
+        <div class="workflow-banner-buttons">
+          <button id="run-workflow-btn-banner" class="btn btn-primary run-workflow-btn">
+            ▶ Run Full Workflow
+          </button>
+          <button id="workflow-btn-inline" class="btn btn-sm btn-secondary workflow-btn-inline">
+            ⚡ Explore Architecture
+          </button>
+        </div>
       </div>
 
       <div class="glass-card" style="margin-bottom: 2rem;">
@@ -463,8 +477,8 @@
 
       <!-- Modal Bottom Action -->
       <div class="workflow-modal-footer">
-        <button id="workflow-launch-btn" class="btn btn-primary" style="padding: 0.85rem 1.85rem; font-size: 1rem; width: 100%;">
-          🚀 Launch Guided Discovery Workflow
+        <button id="run-workflow-btn-modal" class="btn btn-primary run-workflow-btn" style="padding: 0.85rem 1.85rem; font-size: 1rem; width: 100%;">
+          ▶ Run Full Workflow Now
         </button>
       </div>
     </div>

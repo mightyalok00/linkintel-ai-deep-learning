@@ -747,13 +747,56 @@ input:checked + .slider:before {
   color: var(--text-muted);
 }
 
+.workflow-banner-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.run-workflow-btn {
+  background: linear-gradient(135deg, #10b981, #06b6d4) !important;
+  color: #ffffff !important;
+  font-family: var(--font-heading) !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.01em;
+  border: none !important;
+  border-radius: var(--radius-full) !important;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3) !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  padding: 0.48rem 1.15rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.run-workflow-btn:hover {
+  background: linear-gradient(135deg, #059669, #0891b2) !important;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 6px 22px rgba(6, 182, 212, 0.45) !important;
+  color: #ffffff !important;
+}
+
+.run-workflow-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.mobile-workflow-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
 .workflow-btn-inline {
   background: rgba(99, 102, 241, 0.15);
   border: 1px solid var(--border-glow);
   color: #c7d2fe;
-  padding: 0.6rem 1.2rem;
+  padding: 0.55rem 1.15rem;
   font-weight: 600;
   font-size: 0.88rem;
+  border-radius: var(--radius-full);
   transition: all 0.2s;
   white-space: nowrap;
 }
