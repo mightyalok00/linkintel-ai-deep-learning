@@ -7,3 +7,4 @@ models/*.joblib
 !models/spam_risk.joblib
 data/*.csv
 !data/labeled_backlinks.csv
+.vscode/
