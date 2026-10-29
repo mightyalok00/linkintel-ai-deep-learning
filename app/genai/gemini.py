@@ -1,5 +1,7 @@
 import httpx
+
 from app.config import settings
+
 
 def generate_fallback_pitch(domain: str, category: str, evidence: dict) -> str:
     status = str(evidence.get("cost_status", "pending_verification")).replace("_", " ").title()

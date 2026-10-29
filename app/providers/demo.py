@@ -1,6 +1,7 @@
 from app.providers.base import ProspectProvider
 from app.schemas import ProspectInput
 
+
 class DemoProvider(ProspectProvider):
     name = "demo"
 

@@ -1,11 +1,13 @@
 import asyncio
 from urllib.parse import parse_qs, unquote, urlparse
+
 import httpx
 from bs4 import BeautifulSoup
 
 from app.providers.base import ProspectProvider
 from app.schemas import ProspectInput
 from app.security import normalize_domain
+
 
 class LiveSearchProvider(ProspectProvider):
     name = "live_search"
@@ -114,7 +116,7 @@ class LiveSearchProvider(ProspectProvider):
             (f"{category} {kw_str} directory resources submit site free{geo_str}", "🌐 Resource Directory"),
             (f"{category} {kw_str} curated resource list add listing suggest a link", "🌐 Resource Directory"),
             (f"{category} {kw_str} best portals useful tools directory recommend site{geo_str}", "🌐 Resource Directory"),
-            
+
             # 2. PDF & Document Backlinks
             (f"{category} {kw_str} filetype:pdf useful links resources recommended reading", "📄 PDF Document Backlink"),
             (f"{category} {kw_str} whitepaper research references filetype:pdf", "📄 PDF Document Backlink"),
@@ -150,9 +152,7 @@ class LiveSearchProvider(ProspectProvider):
             if isinstance(res, list):
                 for p in res:
                     # Prefer distinct page URLs or domains
-                    if p.page_url not in unique and p.domain not in [x.domain for x in unique.values()]:
-                        unique[p.page_url] = p
-                    elif p.page_url not in unique and len(unique) < target_count:
+                    if p.page_url not in unique and p.domain not in [x.domain for x in unique.values()] or p.page_url not in unique and len(unique) < target_count:
                         unique[p.page_url] = p
 
         results = list(unique.values())[:target_count]

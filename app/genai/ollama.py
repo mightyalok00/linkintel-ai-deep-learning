@@ -1,5 +1,7 @@
 import httpx
+
 from app.config import settings
+
 
 async def explain_prospect(domain: str, category: str, evidence: dict) -> str:
     if not settings.enable_ollama_explanations:

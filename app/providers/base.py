@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
+
 from app.schemas import ProspectInput
+
 
 class ProspectProvider(ABC):
     name = "base"

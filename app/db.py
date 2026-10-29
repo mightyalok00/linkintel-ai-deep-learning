@@ -1,7 +1,19 @@
 import json
-from datetime import datetime, timezone
-from sqlalchemy import create_engine, Column, String, Integer, DateTime, Text, select, desc, text
+from datetime import UTC, datetime
+
+from sqlalchemy import (
+    Column,
+    DateTime,
+    Integer,
+    String,
+    Text,
+    create_engine,
+    desc,
+    select,
+    text,
+)
 from sqlalchemy.orm import declarative_base, sessionmaker
+
 from app.config import settings
 
 connect_args = {"check_same_thread": False} if settings.database_url.startswith("sqlite") else {}
@@ -10,7 +22,7 @@ SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False, futu
 Base = declarative_base()
 
 def get_utc_now():
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 class Scan(Base):
     __tablename__ = "scans"

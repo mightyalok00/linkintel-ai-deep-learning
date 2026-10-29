@@ -1,9 +1,11 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from enum import Enum
+
 from pydantic import BaseModel, Field, HttpUrl, field_validator
 
+
 def get_utc_now():
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 class CostStatus(str, Enum):
     VERIFIED_FREE = "verified_free"
@@ -68,6 +70,7 @@ class ScoreBreakdown(BaseModel):
     confidence: str
     missing_fields: list[str] = Field(default_factory=list)
     semantic_similarity: float | None = None
+    evaluated_at: datetime = Field(default_factory=get_utc_now)
 
 class ProspectResult(BaseModel):
     domain: str
@@ -78,6 +81,9 @@ class ProspectResult(BaseModel):
     score: ScoreBreakdown
     evidence_url: str | None = None
     link_type: str | None = None
+    discovery_source: str = "live_search"
+    verification_status: str = "candidate_unverified"
+    metric_provenance: dict[str, str] = Field(default_factory=dict)
     reasons: list[str] = Field(default_factory=list)
     last_checked: datetime = Field(default_factory=get_utc_now)
 

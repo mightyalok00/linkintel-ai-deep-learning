@@ -1,11 +1,12 @@
 from urllib.parse import urlparse
+
 from app.config import settings
-from app.providers.demo import DemoProvider
-from app.providers.live_search import LiveSearchProvider
-from app.scoring import score_prospect
 from app.deep_learning.relevance import batch_semantic_similarity
 from app.ml.features import FEATURE_COLUMNS
 from app.ml.spam_model import predict_spam_risk
+from app.providers.demo import DemoProvider
+from app.providers.live_search import LiveSearchProvider
+from app.scoring import score_prospect
 
 PROVIDERS = {
     "demo": DemoProvider(),

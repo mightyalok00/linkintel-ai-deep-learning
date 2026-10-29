@@ -4,40 +4,40 @@ import io
 import json
 import uuid
 from contextlib import asynccontextmanager
-from urllib.parse import urlparse
-from bs4 import BeautifulSoup
 from pathlib import Path
-from fastapi import FastAPI, HTTPException, UploadFile, File, Query, Response
-from fastapi.responses import JSONResponse, StreamingResponse, FileResponse
+from urllib.parse import urlparse
+
+import httpx
+from bs4 import BeautifulSoup
+from fastapi import FastAPI, File, HTTPException, Query, Response, UploadFile
+from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.exc import SQLAlchemyError
-import httpx
 
 from app.config import settings
 from app.db import (
-    init_db,
-    save_scan,
-    get_scan,
-    list_scans,
-    delete_scan,
-    create_scan,
-    update_scan_progress,
     complete_scan,
+    create_scan,
+    delete_scan,
+    get_scan,
+    init_db,
+    list_scans,
+    update_scan_progress,
 )
+from app.genai import explain_prospect
+from app.providers.csv_provider import parse_prospects_csv
 from app.schemas import (
     AnalyzeRequest,
-    ScoreRequest,
+    AsyncScanJobResponse,
     BacklinkCheckRequest,
     CostStatus,
     ExplainProspectRequest,
-    AsyncScanJobResponse,
     ScanStatusResponse,
+    ScoreRequest,
 )
 from app.scoring import score_prospect
+from app.security import safe_fetch_url
 from app.service import analyze
-from app.providers.csv_provider import parse_prospects_csv
-from app.security import validate_public_url
-from app.genai import explain_prospect
 
 STATIC_DIR = Path(__file__).parent / "static"
 
@@ -244,7 +244,7 @@ async def stream_scan_progress(scan_id: str):
                     yield f"data: {json.dumps(event)}\n\n"
                     if event.get("status") in ("completed", "failed") or event.get("progress", 0) >= 100:
                         break
-                except asyncio.TimeoutError:
+                except TimeoutError:
                     yield ": ping\n\n"
         finally:
             scan_event_manager.unsubscribe(scan_id, q)
@@ -268,7 +268,7 @@ async def read_scan(
     record = get_scan(scan_id)
     if record is None:
         raise HTTPException(status_code=404, detail="Scan not found.")
-    
+
     if cost_status or min_score is not None:
         filtered = []
         for item in record["payload"].get("prospects", []):
@@ -282,7 +282,7 @@ async def read_scan(
         record["payload"] = dict(record["payload"])
         record["payload"]["prospects"] = filtered
         record["payload"]["prospects_found"] = len(filtered)
-        
+
     return record
 
 @app.delete("/api/v1/scans/{scan_id}")
@@ -393,98 +393,83 @@ async def check_backlinks(request: BacklinkCheckRequest):
 
     async with httpx.AsyncClient(
         timeout=10,
-        follow_redirects=True,
         headers={"User-Agent": "LinkIntelAI/2.0"},
     ) as client:
         for item in request.urls:
             url_str = str(item)
-            # SSRF Protection: Check that the domain is public and does not resolve to private IPs
             try:
-                validate_public_url(url_str)
+                response = await safe_fetch_url(client, url_str, max_redirects=5)
             except ValueError as exc:
                 results.append({
                     "url": url_str,
                     "reachable": False,
                     "status_code": None,
-                    "note": f"Blocked by SSRF protection: {str(exc)}",
+                    "note": f"Blocked by SSRF protection: {exc!s}",
                 })
                 continue
-
-            try:
-                response = await client.get(url_str)
-                # Ensure redirected URL is also public
-                if response.url != item:
-                    try:
-                        validate_public_url(str(response.url))
-                    except ValueError as exc:
-                        results.append({
-                            "url": url_str,
-                            "reachable": False,
-                            "status_code": response.status_code,
-                            "note": f"Redirect blocked by SSRF protection: {str(exc)}",
-                        })
-                        continue
-
-                reachable = response.status_code < 400
-                res_data: dict[str, any] = {
-                    "url": url_str,
-                    "reachable": reachable,
-                    "status_code": response.status_code,
-                }
-
-                # If target domain/URL was specified, parse HTML and verify presence, rel, anchor
-                if reachable and target and "text/html" in response.headers.get("content-type", ""):
-                    soup = BeautifulSoup(response.text, "html.parser")
-                    links = soup.find_all("a", href=True)
-                    matched_link = None
-                    for link in links:
-                        href = link["href"].lower()
-                        if target in href:
-                            matched_link = link
-                            break
-
-                    # Meta robots check
-                    robots_meta = soup.find("meta", attrs={"name": lambda v: v and v.lower() == "robots"})
-                    robots_content = robots_meta["content"].lower() if (robots_meta and robots_meta.has_attr("content")) else ""
-                    noindex = "noindex" in robots_content
-                    meta_nofollow = "nofollow" in robots_content
-
-                    if matched_link:
-                        rel = matched_link.get("rel", [])
-                        if isinstance(rel, str):
-                            rel = [rel]
-                        rel_lower = [r.lower() for r in rel]
-                        is_dofollow = (
-                            not meta_nofollow
-                            and not any(r in {"nofollow", "sponsored", "ugc"} for r in rel_lower)
-                        )
-                        res_data.update({
-                            "backlink_found": True,
-                            "target": target,
-                            "anchor_text": matched_link.get_text(strip=True),
-                            "href": matched_link["href"],
-                            "rel": rel_lower,
-                            "is_dofollow": is_dofollow,
-                            "noindex": noindex,
-                            "note": "Backlink identified on target page.",
-                        })
-                    else:
-                        res_data.update({
-                            "backlink_found": False,
-                            "target": target,
-                            "noindex": noindex,
-                            "note": "Page is reachable, but target backlink was not found in HTML.",
-                        })
-                else:
-                    res_data["note"] = "Reachability verified."
-
-                results.append(res_data)
-            except httpx.HTTPError as exc:
+            except Exception as exc:
                 results.append({
                     "url": url_str,
                     "reachable": False,
                     "status_code": None,
-                    "note": f"URL request failed: {type(exc).__name__}",
+                    "note": f"Request failed: {exc!s}",
                 })
+                continue
+
+            reachable = response.status_code < 400
+            res_data: dict[str, any] = {
+                "url": url_str,
+                "reachable": reachable,
+                "status_code": response.status_code,
+            }
+
+            # If target domain/URL was specified, parse HTML and verify presence, rel, anchor
+            if reachable and target and "text/html" in response.headers.get("content-type", ""):
+                soup = BeautifulSoup(response.text, "html.parser")
+                links = soup.find_all("a", href=True)
+                matched_link = None
+                for link in links:
+                    href = link["href"].lower()
+                    if target in href:
+                        matched_link = link
+                        break
+
+                # Meta robots check
+                robots_meta = soup.find("meta", attrs={"name": lambda v: v and v.lower() == "robots"})
+                robots_content = robots_meta["content"].lower() if (robots_meta and robots_meta.has_attr("content")) else ""
+                noindex = "noindex" in robots_content
+                meta_nofollow = "nofollow" in robots_content
+
+                if matched_link:
+                    rel = matched_link.get("rel", [])
+                    if isinstance(rel, str):
+                        rel = [rel]
+                    rel_lower = [r.lower() for r in rel]
+                    is_dofollow = (
+                        not meta_nofollow
+                        and not any(r in {"nofollow", "sponsored", "ugc"} for r in rel_lower)
+                    )
+                    res_data.update({
+                        "backlink_found": True,
+                        "target": target,
+                        "anchor_text": matched_link.get_text(strip=True),
+                        "href": matched_link["href"],
+                        "rel": rel_lower,
+                        "is_dofollow": is_dofollow,
+                        "noindex": noindex,
+                        "note": "Backlink identified on target page.",
+                    })
+                else:
+                    res_data.update({
+                        "backlink_found": False,
+                        "target": target,
+                        "noindex": noindex,
+                        "note": "Page is reachable, but target backlink was not found in HTML.",
+                    })
+            else:
+                res_data["note"] = "Reachability verified."
+
+            results.append(res_data)
 
     return {"results": results}
+

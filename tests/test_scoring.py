@@ -1,5 +1,6 @@
-from app.schemas import ProspectInput, CostStatus
+from app.schemas import CostStatus, ProspectInput
 from app.scoring import cost_status, score_prospect
+
 
 def test_unknown_cost_is_not_free():
     assert cost_status(ProspectInput(domain="example.com")) == CostStatus.PENDING

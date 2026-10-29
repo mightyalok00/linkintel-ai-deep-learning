@@ -14,5 +14,10 @@ pythonpath = ["."]
 addopts = "-q"
 
 [tool.ruff]
-line-length = 88
+line-length = 100
 target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+ignore = ["E501"]
+

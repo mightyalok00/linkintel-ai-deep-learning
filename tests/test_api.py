@@ -1,4 +1,5 @@
 from fastapi.testclient import TestClient
+
 from app.main import app
 
 client = TestClient(app)
@@ -90,7 +91,6 @@ def test_live_search_provider(monkeypatch):
     assert any("live web" in w.lower() for w in body["warnings"])
 
 def test_explain_endpoint(monkeypatch):
-    from app.config import settings
     # Test with mock response
     async def mock_explain(domain, category, evidence):
         return f"Mocked explanation for {domain} in {category}"
@@ -133,13 +133,13 @@ def test_backlink_check_html_parsing(monkeypatch):
         url = "https://public-resource.example/directory"
         headers = {"content-type": "text/html; charset=utf-8"}
         text = html_content
+        is_redirect = False
 
     async def mock_get(self, url, **kwargs):
         return MockResponse()
 
     monkeypatch.setattr(httpx.AsyncClient, "get", mock_get)
-    # Monkeypatch validate_public_url to pass for our test public-resource.example
-    monkeypatch.setattr("app.main.validate_public_url", lambda u: u)
+    monkeypatch.setattr("app.security.validate_public_url", lambda u: u)
 
     resp = client.post("/api/v1/backlinks/check", json={
         "urls": ["https://public-resource.example/directory"],

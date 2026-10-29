@@ -2,6 +2,7 @@ from app.config import settings
 from app.genai.gemini import explain_prospect_gemini
 from app.genai.ollama import explain_prospect as explain_prospect_ollama
 
+
 async def explain_prospect(domain: str, category: str, evidence: dict) -> str:
     """
     Unified GenAI dispatcher: delegates to Google Gemini if configured,

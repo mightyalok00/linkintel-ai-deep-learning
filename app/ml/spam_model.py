@@ -1,8 +1,11 @@
 from pathlib import Path
+
 import joblib
 import pandas as pd
+
 from app.config import settings
 from app.ml.features import FEATURE_COLUMNS
+
 
 def predict_spam_risk(feature_row: dict) -> float | None:
     if not settings.enable_spam_model:

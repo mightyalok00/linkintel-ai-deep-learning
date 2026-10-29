@@ -45,12 +45,32 @@ def score_prospect(p: ProspectInput, semantic_similarity: float | None = None,
         reasons.append("Cost eligibility is unverified; do not treat this as free.")
     else:
         reasons.append("A fee, mandatory purchase, or paid plan was identified.")
+
+    if not p.terms_verified:
+        reasons.append("Opportunity discovered via live search snippet; submission guidelines, fees, and editorial acceptance are unverified candidates requiring human/bot confirmation.")
+
     if missing:
         reasons.append("Ranking withheld; missing metrics: " + ", ".join(missing))
     if semantic_similarity is not None:
         reasons.append("Semantic similarity is a relevance signal, not a link-acquisition probability.")
     if predicted_spam_risk is not None and p.spam_risk is None:
-        reasons.append("Spam risk comes from the configured ML model; validate calibration on real labels.")
+        reasons.append("Spam risk generated from Random Forest classifier (models/spam_risk.joblib).")
+
+    # Track data provenance for every metric
+    provenance = {
+        "relevance": "sentence_transformer_cosine" if semantic_similarity is not None else ("provided_input" if p.relevance is not None else "missing"),
+        "spam_risk": "random_forest_v2" if (predicted_spam_risk is not None and p.spam_risk is None) else ("provided_input" if p.spam_risk is not None else "missing"),
+        "authority": "provided_or_api" if p.authority_score is not None else "missing_uncalibrated",
+        "backlink_quality": "provided_or_api" if p.backlink_quality is not None else "missing_uncalibrated",
+        "cost": "editorial_verified_free" if status == CostStatus.VERIFIED_FREE else ("paid_placement" if status == CostStatus.PAID else "unverified_search_snippet"),
+    }
+
+    verification_status = (
+        "editorial_verified_free" if (p.terms_verified and status == CostStatus.VERIFIED_FREE)
+        else ("editorial_verified_paid" if (p.terms_verified and status == CostStatus.PAID)
+        else "candidate_unverified")
+    )
+
     return ProspectResult(
         domain=p.domain, page_url=p.page_url, title=p.title, description=p.description,
         cost_status=status,
@@ -61,4 +81,9 @@ def score_prospect(p: ProspectInput, semantic_similarity: float | None = None,
             opportunity_score=round(score, 2) if score is not None else None,
             confidence=confidence, missing_fields=missing,
             semantic_similarity=semantic_similarity),
-        evidence_url=p.evidence_url, link_type=p.link_type, reasons=reasons)
+        evidence_url=p.evidence_url, link_type=p.link_type,
+        discovery_source="live_search" if not p.terms_verified else "editorial_inspection",
+        verification_status=verification_status,
+        metric_provenance=provenance,
+        reasons=reasons)
+

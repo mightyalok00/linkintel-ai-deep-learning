@@ -1,5 +1,6 @@
 from functools import lru_cache
 
+
 @lru_cache(maxsize=1)
 def _load_model(model_name: str):
     try:

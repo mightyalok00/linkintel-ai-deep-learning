@@ -1,6 +1,8 @@
 import csv
 import io
+
 from app.schemas import ProspectInput
+
 
 def parse_prospects_csv(content: bytes) -> list[ProspectInput]:
     try:
