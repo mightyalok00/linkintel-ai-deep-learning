@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupBacklinkVerifier();
   setupCsvImporter();
   setupModals();
+  setupWorkflowFeature();
   loadScanHistory();
 });
 
@@ -686,6 +687,108 @@ function setupModals() {
   });
 }
 
+function setupWorkflowFeature() {
+  const modal = document.getElementById('workflow-modal');
+  const closeBtn = document.getElementById('workflow-modal-close');
+  const desktopBtn = document.getElementById('workflow-btn-desktop');
+  const mobileBtn = document.getElementById('workflow-btn-mobile');
+  const inlineBtn = document.getElementById('workflow-btn-inline');
+  const launchBtn = document.getElementById('workflow-launch-btn');
+  const stepperNodes = document.querySelectorAll('.stepper-node');
+  const stepCards = document.querySelectorAll('.workflow-step-card');
+  const actionBtns = document.querySelectorAll('.workflow-action-btn');
+
+  if (!modal) return;
+
+  const openWorkflow = () => {
+    modal.classList.add('active');
+  };
+
+  const closeWorkflow = () => {
+    modal.classList.remove('active');
+  };
+
+  if (desktopBtn) desktopBtn.addEventListener('click', openWorkflow);
+  if (mobileBtn) mobileBtn.addEventListener('click', openWorkflow);
+  if (inlineBtn) inlineBtn.addEventListener('click', openWorkflow);
+  if (closeBtn) closeBtn.addEventListener('click', closeWorkflow);
+
+  window.addEventListener('click', (e) => {
+    if (e.target === modal) closeWorkflow();
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('active')) {
+      closeWorkflow();
+    }
+  });
+
+  // Stepper Node Click
+  stepperNodes.forEach(node => {
+    node.addEventListener('click', () => {
+      const step = node.getAttribute('data-step');
+      stepperNodes.forEach(n => n.classList.remove('active'));
+      node.classList.add('active');
+
+      stepCards.forEach(c => c.classList.remove('active'));
+      const activeCard = document.getElementById(`workflow-step-${step}`);
+      if (activeCard) {
+        activeCard.classList.add('active');
+        activeCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    });
+  });
+
+  // Action Buttons inside cards
+  actionBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const action = btn.getAttribute('data-action');
+      closeWorkflow();
+      switchToTab(`tab-${action}`);
+    });
+  });
+
+  // Launch guided discovery workflow button
+  if (launchBtn) {
+    launchBtn.addEventListener('click', () => {
+      closeWorkflow();
+      switchToTab('tab-analyze');
+      const form = document.getElementById('analyze-form');
+      if (form) {
+        form.scrollIntoView({ behavior: 'smooth' });
+        const input = document.getElementById('website_url');
+        if (input) input.focus();
+      }
+    });
+  }
+}
+
+function switchToTab(tabId) {
+  const navBtns = document.querySelectorAll('.nav-btn');
+  const tabPanes = document.querySelectorAll('.tab-pane');
+
+  navBtns.forEach(b => {
+    if (b.getAttribute('data-tab') === tabId) {
+      b.classList.add('active');
+    } else {
+      b.classList.remove('active');
+    }
+  });
+
+  tabPanes.forEach(p => {
+    if (p.id === tabId) {
+      p.classList.add('active');
+    } else {
+      p.classList.remove('active');
+    }
+  });
+
+  if (tabId === 'tab-history') {
+    loadScanHistory();
+  }
+}
+
 function escapeHtml(str) {
   if (!str) return '';
   return String(str)
@@ -695,3 +798,4 @@ function escapeHtml(str) {
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;');
 }
+

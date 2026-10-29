@@ -14,13 +14,20 @@
   <!-- Top Header Navigation -->
   <header class="header">
     <div class="header-container">
-      <a href="/" class="brand">
-        <div class="brand-icon">LI</div>
-        <div>
-          <span class="brand-title">LinkIntel AI</span>
-          <span class="brand-badge">Intelligence Suite</span>
-        </div>
-      </a>
+      <div class="header-brand-wrap">
+        <a href="/" class="brand">
+          <div class="brand-icon">LI</div>
+          <div>
+            <span class="brand-title">LinkIntel AI</span>
+            <span class="brand-badge">Intelligence Suite</span>
+          </div>
+        </a>
+        <!-- Mobile Workflow Trigger Button -->
+        <button id="workflow-btn-mobile" class="workflow-trigger-btn mobile-only" title="Open Interactive Pipeline Workflow" aria-label="Open Pipeline Workflow">
+          <span class="workflow-btn-pulse">⚡</span>
+          <span>Workflow</span>
+        </button>
+      </div>
 
       <nav class="nav-tabs">
         <button class="nav-btn active" data-tab="tab-analyze">🎯 Opportunities</button>
@@ -29,9 +36,17 @@
         <button class="nav-btn" data-tab="tab-history">🗄 Scan Archive</button>
       </nav>
 
-      <div class="system-pill">
-        <div class="status-dot"></div>
-        <span>FastAPI &amp; Gemini Flash Active</span>
+      <div class="header-actions">
+        <!-- Laptop / Desktop Workflow Trigger Button -->
+        <button id="workflow-btn-desktop" class="workflow-trigger-btn desktop-only" title="Open Interactive Pipeline Workflow">
+          <span class="workflow-btn-pulse">⚡</span>
+          <span class="workflow-btn-text">Pipeline Workflow</span>
+        </button>
+
+        <div class="system-pill">
+          <div class="status-dot"></div>
+          <span>FastAPI &amp; Gemini Flash Active</span>
+        </div>
       </div>
     </div>
   </header>
@@ -41,6 +56,18 @@
 
     <!-- Tab 1: Analyze & Discover -->
     <section id="tab-analyze" class="tab-pane active">
+      <!-- Workflow Interactive Banner -->
+      <div class="workflow-banner glass-card">
+        <div class="workflow-banner-content">
+          <div class="workflow-banner-badge">⚡ Interactive Pipeline</div>
+          <h3 class="workflow-banner-title">Automated 4-Stage SEO Intelligence Workflow</h3>
+          <p class="workflow-banner-desc">From live multi-vector web discovery &amp; ML spam filtering to verified link inspection &amp; Gemini outreach.</p>
+        </div>
+        <button id="workflow-btn-inline" class="btn btn-sm btn-secondary workflow-btn-inline">
+          ⚡ Explore Step-by-Step Workflow
+        </button>
+      </div>
+
       <div class="glass-card" style="margin-bottom: 2rem;">
         <h2 class="card-title">Target Website Analysis &amp; Zero-Cost Discovery</h2>
         <p class="card-desc">Identify high-relevance backlink opportunities strictly verified for free submissions ($0 placement &amp; no mandatory purchases).</p>
@@ -309,6 +336,137 @@
       <button class="modal-close" id="ai-modal-close">&times;</button>
       <h3 class="card-title" id="ai-modal-domain" style="color: #c084fc;">AI Prospect Analysis</h3>
       <div id="ai-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Interactive System Workflow Modal -->
+  <div class="modal-overlay" id="workflow-modal" role="dialog" aria-modal="true" aria-labelledby="workflow-modal-title">
+    <div class="modal-content workflow-modal-content">
+      <button class="modal-close" id="workflow-modal-close" aria-label="Close workflow modal">&times;</button>
+      
+      <div class="workflow-header">
+        <div class="workflow-badge">⚡ End-to-End Pipeline</div>
+        <h2 id="workflow-modal-title" class="workflow-title">LinkIntel AI System Workflow</h2>
+        <p class="workflow-subtitle">How opportunities travel from live multi-vector web discovery to Google Gemini outreach drafting.</p>
+      </div>
+
+      <!-- Stepper Navigation Bar -->
+      <div class="workflow-stepper">
+        <div class="stepper-node active" data-step="1">
+          <div class="stepper-circle">1</div>
+          <div class="stepper-label">Discovery</div>
+        </div>
+        <div class="stepper-line"></div>
+        <div class="stepper-node" data-step="2">
+          <div class="stepper-circle">2</div>
+          <div class="stepper-label">AI &amp; ML Gate</div>
+        </div>
+        <div class="stepper-line"></div>
+        <div class="stepper-node" data-step="3">
+          <div class="stepper-circle">3</div>
+          <div class="stepper-label">SSRF &amp; Audit</div>
+        </div>
+        <div class="stepper-line"></div>
+        <div class="stepper-node" data-step="4">
+          <div class="stepper-circle">4</div>
+          <div class="stepper-label">Pitch &amp; Export</div>
+        </div>
+      </div>
+
+      <!-- Step Cards Container -->
+      <div class="workflow-cards-container">
+        <!-- Step 1 -->
+        <div class="workflow-step-card active" id="workflow-step-1">
+          <div class="step-card-header">
+            <div class="step-card-num">STAGE 01</div>
+            <div class="step-card-icon">🌐 📄 🖼️ 🏢</div>
+          </div>
+          <h3 class="step-card-title">Multi-Bucket Web Discovery &amp; Harvesting</h3>
+          <p class="step-card-text">
+            Concurrently deploys targeted search queries across 4 distinct web vectors rather than generic blog comments:
+          </p>
+          <div class="step-card-features">
+            <span class="step-tag">🌐 Curated Resource Directories</span>
+            <span class="step-tag">📄 PDF Whitepapers (filetype:pdf)</span>
+            <span class="step-tag">🖼️ Image &amp; Infographics Submissions</span>
+            <span class="step-tag">🏢 High-Trust Business Citations</span>
+            <span class="step-tag">🌍 10+ Country Geo-Scoping</span>
+          </div>
+          <div class="step-card-footer">
+            <button class="btn btn-sm btn-secondary workflow-action-btn" data-action="analyze">🎯 Jump to Discovery Form</button>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="workflow-step-card" id="workflow-step-2">
+          <div class="step-card-header">
+            <div class="step-card-num">STAGE 02</div>
+            <div class="step-card-icon">🧠 🌲 ⚖️</div>
+          </div>
+          <h3 class="step-card-title">Dual AI/ML Triage &amp; Zero-Cost Screening</h3>
+          <p class="step-card-text">
+            Every candidate is screened through two machine learning tiers and a strict cost verification gate:
+          </p>
+          <div class="step-card-features">
+            <span class="step-tag">🧠 Sentence Transformers (Relevance Cosine)</span>
+            <span class="step-tag">🌲 Random Forest Classifier (0.957 ROC-AUC)</span>
+            <span class="step-tag">⚖️ 6-Condition Zero-Cost Policy Gate</span>
+            <span class="step-tag">🚫 Outbound Link &amp; Thin Content Defense</span>
+          </div>
+          <div class="step-card-footer">
+            <span class="workflow-status-badge">Strict $0 Placement Policy Enforced</span>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="workflow-step-card" id="workflow-step-3">
+          <div class="step-card-header">
+            <div class="step-card-num">STAGE 03</div>
+            <div class="step-card-icon">🛡️ 🔍 ⚡</div>
+          </div>
+          <h3 class="step-card-title">Multi-Hop SSRF Defense &amp; Live Backlink Audit</h3>
+          <p class="step-card-text">
+            Validates live web pages safely without exposing server infrastructure:
+          </p>
+          <div class="step-card-features">
+            <span class="step-tag">🛡️ Per-Hop SSRF Redirect Validation (safe_fetch_url)</span>
+            <span class="step-tag">🔒 Carrier-Grade NAT &amp; Cloud Metadata Filter</span>
+            <span class="step-tag">🔍 DOM Parser for &lt;a href&gt; Target Matching</span>
+            <span class="step-tag">🏷️ Dofollow/Nofollow &amp; Meta Robots Inspection</span>
+          </div>
+          <div class="step-card-footer">
+            <button class="btn btn-sm btn-secondary workflow-action-btn" data-action="verify">🔍 Open Link Verifier</button>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="workflow-step-card" id="workflow-step-4">
+          <div class="step-card-header">
+            <div class="step-card-num">STAGE 04</div>
+            <div class="step-card-icon">✨ 📊 🚀</div>
+          </div>
+          <h3 class="step-card-title">Google Gemini Outreach &amp; Multi-Format Export</h3>
+          <p class="step-card-text">
+            Turns high-scoring vetted opportunities into converted placements and deliverables:
+          </p>
+          <div class="step-card-features">
+            <span class="step-tag">✨ Google Gemini Flash Outreach Pitch Generator</span>
+            <span class="step-tag">📊 Formatted Excel (.xlsx) Workbooks with Badges</span>
+            <span class="step-tag">📥 CSV &amp; REST JSON Endpoints</span>
+            <span class="step-tag">🗄 SQLite Scan Persistence &amp; Auto-Migration</span>
+          </div>
+          <div class="step-card-footer">
+            <button class="btn btn-sm btn-secondary workflow-action-btn" data-action="history">🗄 View Past Scans</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Bottom Action -->
+      <div class="workflow-modal-footer">
+        <button id="workflow-launch-btn" class="btn btn-primary" style="padding: 0.85rem 1.85rem; font-size: 1rem; width: 100%;">
+          🚀 Launch Guided Discovery Workflow
+        </button>
+      </div>
     </div>
   </div>
 
