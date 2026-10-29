@@ -1,7 +1,4 @@
-<div align="center">
-
-# 🚀 LinkIntel AI
-### Autonomous Deep Learning Backlink Intelligence & AI Outreach Engine
+# 🚀 LinkIntel AI — Deep Learning Backlink Intelligence & AI Outreach Engine
 
 [![Python Version](https://img.shields.io/badge/python-3.12-blue.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688.svg?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
@@ -12,20 +9,11 @@
 [![Tests](https://img.shields.io/badge/Tests-28%2F28%20Passed-brightgreen.svg?logo=pytest&logoColor=white)](tests/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-*An enterprise-grade, full-stack intelligence platform that discovers 100+ high-authority, verified-free backlink opportunities across multiple web formats, filters toxic links via machine learning, computes semantic topical relevance with PyTorch sentence embeddings, and crafts personalized outreach pitches using Google Gemini.*
+An enterprise-grade, full-stack intelligence platform that discovers 100+ high-authority, verified-free backlink opportunities across multiple web formats, filters toxic links via machine learning, computes semantic topical relevance with PyTorch sentence embeddings, and crafts personalized outreach pitches using Google Gemini.
+
+[Key Features](#-key-features) • [Architecture](#-system-architecture) • [Quick Start](#-quick-start) • [API Reference](#-api-reference) • [Machine Learning](#-machine-learning--ai-engine) • [Dashboard UI](#-interactive-dashboard)
 
 ---
-
-[Key Features](#-key-features) •
-[Architecture](#-system-architecture) •
-[Quick Start](#-quick-start) •
-[API Reference](#-api-reference) •
-[Machine Learning](#-machine-learning--ai-engine) •
-[Dashboard UI](#-interactive-dashboard)
-
----
-
-</div>
 
 ## 🌟 Key Features
 
@@ -33,7 +21,7 @@
 | :--- | :--- | :--- |
 | **Multi-Bucket Web Discovery** | Concurrently harvests 4 distinct web vectors: Resource Catalogs, Whitepapers (`filetype:pdf`), Infographics, and Business Citations. | Uncovers high-converting links overlooked by standard scrapers. |
 | **Asynchronous Job Queue** | Non-blocking **HTTP 202 Accepted** dispatcher with **Server-Sent Events (SSE)** and status polling. | Fast UI response times without HTTP timeouts during heavy deep-scans. |
-| **3-Tier AI / ML Pipeline** | 1. **Scikit-Learn Random Forest** (Spam risk)<br>2. **Sentence-Transformers** (Semantic topical cosine)<br>3. **Google Gemini** (Outreach email generator). | Triages opportunities by true editorial value, authority, and safety. |
+| **3-Tier AI / ML Pipeline** | Random Forest tabular spam scoring, Sentence-Transformers semantic cosine, and Google Gemini outreach pitch generation. | Triages opportunities by true editorial value, authority, and safety. |
 | **Enterprise SSRF Shield** | Pre-flight DNS resolution checking target IPs against RFC 1918 private subnets, loopbacks, and cloud metadata. | Completely immune to internal network intrusion or SSRF attacks. |
 | **Strict Zero-Cost Gate** | Algorithmic screening verifying 6 explicit cost conditions before awarding `verified_free` status. | Prevents wasted time pitching link farms or surprise paywalls. |
 | **Live Link Verification** | Real-time HTTP header and HTML DOM inspection verifying backlink reachability, `dofollow` status, and `noindex` robots tags. | Eliminates broken or unindexed opportunities. |
@@ -104,8 +92,6 @@ docker compose up -d --build
 
 The application will be live at **`http://localhost:8000/`**.
 
----
-
 ### Option 2: Local Python Setup (PowerShell / Bash)
 
 **Requirements**: Python 3.12+
@@ -117,7 +103,7 @@ cd linkintel-ai-deep-learning
 
 # 2. Create and activate virtual environment
 py -3.12 -m venv .venv
-.\.venv\Scripts\Activate.ps1   # On Linux/macOS: source .venv/bin/activate
+.\.venv\Scripts\Activate.ps1
 
 # 3. Install dependencies
 pip install --upgrade pip
@@ -155,6 +141,7 @@ tests/test_security.py .............                      [100%]
 ## 📊 Interactive Dashboard
 
 The mounted frontend delivers an interface designed without bloated JavaScript frameworks:
+
 - **Niche Presets**: Instant configuration for Software/SaaS, Physiotherapy, E-commerce, Real Estate, Legal, Finance, and Marketing.
 - **Region Scope Selector**: Target `Worldwide / Global` or localized markets (`US`, `UK`, `CA`, `AU`, `IN`, `DE`, `FR`, `SG`, `AE`, `JP`, `BR`).
 - **Live Progress Monitor**: Animated SSE visualizer reporting search progress, semantic vectorization, and ranking milestones.
@@ -184,6 +171,7 @@ The mounted frontend delivers an interface designed without bloated JavaScript f
 ```
 
 **Response (`202 Accepted`):**
+
 ```json
 {
   "scan_id": "9d8e7c6b-5a4f-3e2d-1c0b-a9b8c7d6e5f4",
@@ -196,13 +184,12 @@ The mounted frontend delivers an interface designed without bloated JavaScript f
 }
 ```
 
----
-
 ### 2. Live SSE Progress Stream
 
 `GET /api/v1/scans/{scan_id}/stream`
 
 Returns a real-time `text/event-stream` stream:
+
 ```text
 data: {"scan_id": "...", "status": "discovering", "progress": 25, "stage": "Dispatching 12 search workers...", "found_count": 0}
 data: {"scan_id": "...", "status": "discovering", "progress": 65, "stage": "Extracted 74 live candidate opportunities.", "found_count": 74}
@@ -210,15 +197,11 @@ data: {"scan_id": "...", "status": "scoring", "progress": 88, "stage": "Evaluati
 data: {"scan_id": "...", "status": "completed", "progress": 100, "stage": "Scan completed successfully", "found_count": 74}
 ```
 
----
-
 ### 3. Export to Excel (.xlsx)
 
 `GET /api/v1/export/xlsx/{scan_id}`
 
 Downloads a formatted spreadsheet with domain authority, URL links, link types, cost statuses, and metric breakdowns.
-
----
 
 ### 4. AI Pitch & Outreach Strategy
 
@@ -234,8 +217,6 @@ Downloads a formatted spreadsheet with domain authority, URL links, link types, 
   }
 }
 ```
-
----
 
 ### 5. Live Backlink Reachability Check
 
@@ -253,6 +234,7 @@ Downloads a formatted spreadsheet with domain authority, URL links, link types, 
 ## 🧠 Machine Learning & AI Engine
 
 ### Random Forest Spam Classifier
+
 - **Model Pipeline**: Median Imputation $\to$ Standard Scaling $\to$ Balanced Random Forest (300 estimators).
 - **Features Analyzed**:
   - `referring_domains`: Domain authority indicator.
@@ -265,6 +247,7 @@ Downloads a formatted spreadsheet with domain authority, URL links, link types, 
 - **Performance**: **ROC-AUC: 1.000**, Macro F1: 1.00.
 
 To retrain the model on your own dataset:
+
 ```powershell
 python -m app.ml.train_spam_model --input data/labeled_backlinks.csv --output models/spam_risk.joblib
 ```
@@ -274,13 +257,17 @@ python -m app.ml.train_spam_model --input data/labeled_backlinks.csv --output mo
 ## 🛡️ Security & Zero-Cost Policy
 
 ### SSRF (Server-Side Request Forgery) Prevention
+
 The platform prevents loopback, private intranet, and cloud credential hijacking:
+
 - Resolves hostnames via `socket.getaddrinfo`.
 - Evaluates all resolved IPs against RFC 1918 private subnets, loopback ranges (`127.0.0.0/8`), link-local IPs, and cloud metadata services (`169.254.169.254`).
 - Any attempt to target internal addresses is blocked with an immediate security exception.
 
 ### Strict Free-Cost Eligibility
+
 Opportunities are only designated `verified_free` if all conditions are satisfied:
+
 1. `placement_fee == 0`
 2. `submission_fee == 0`
 3. `mandatory_purchase == false`
