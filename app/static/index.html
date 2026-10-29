@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LinkIntel AI — Deep Learning Backlink Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+  <!-- Top Header Navigation -->
+  <header class="header">
+    <div class="header-container">
+      <a href="/" class="brand">
+        <div class="brand-icon">LI</div>
+        <div>
+          <span class="brand-title">LinkIntel AI</span>
+          <span class="brand-badge">Intelligence Suite</span>
+        </div>
+      </a>
+
+      <nav class="nav-tabs">
+        <button class="nav-btn active" data-tab="tab-analyze">🎯 Opportunities</button>
+        <button class="nav-btn" data-tab="tab-verify">🔍 Link Verifier</button>
+        <button class="nav-btn" data-tab="tab-csv">📁 CSV Import</button>
+        <button class="nav-btn" data-tab="tab-history">🗄 Scan Archive</button>
+      </nav>
+
+      <div class="system-pill">
+        <div class="status-dot"></div>
+        <span>FastAPI &amp; Gemini Flash Active</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Workspace Content -->
+  <main class="main-content">
+
+    <!-- Tab 1: Analyze & Discover -->
+    <section id="tab-analyze" class="tab-pane active">
+      <div class="glass-card" style="margin-bottom: 2rem;">
+        <h2 class="card-title">Target Website Analysis &amp; Zero-Cost Discovery</h2>
+        <p class="card-desc">Identify high-relevance backlink opportunities strictly verified for free submissions ($0 placement &amp; no mandatory purchases).</p>
+
+        <form id="analyze-form">
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="website_url">Your Website URL</label>
+              <input type="url" id="website_url" class="form-input" placeholder="https://phoenixphysio.co.uk" required value="https://phoenixphysio.co.uk">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="niche_preset">Industry / Niche Selector</label>
+              <select id="niche_preset" class="form-select">
+                <option value="health" selected>🩺 Healthcare &amp; Wellness (Physiotherapy, Clinics)</option>
+                <option value="software">💻 Software &amp; SaaS (Developer Tools, AI)</option>
+                <option value="ecommerce">🛍️ E-Commerce &amp; D2C Retail</option>
+                <option value="finance">💰 Finance &amp; Fintech (Accounting, Wealth)</option>
+                <option value="realestate">🏠 Real Estate &amp; Construction</option>
+                <option value="legal">⚖️ Legal &amp; Corporate Advisory</option>
+                <option value="education">🎓 Education &amp; EdTech</option>
+                <option value="marketing">📈 Digital Marketing &amp; SEO Agency</option>
+                <option value="fitness">🏋️ Fitness, Sports &amp; Nutrition</option>
+                <option value="custom">✍️ Custom Niche (Write in below)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="category">Category Keyword</label>
+              <input type="text" id="category" class="form-input" placeholder="e.g. physiotherapy, health, saas" required value="physiotherapy">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="keywords">Target Keywords (Comma Separated)</label>
+              <input type="text" id="keywords" class="form-input" placeholder="sports injuries, rehab, clinics" value="sports injury clinic, rehabilitation, wellness">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="target_count">Quantity to Discover</label>
+              <select id="target_count" class="form-select">
+                <option value="100" selected>⚡ Find 100 Backlinks (Directories, PDFs, Images)</option>
+                <option value="50">Find 50 Backlinks</option>
+                <option value="25">Find 25 Backlinks</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="country">Target Country / Region Scope</label>
+              <select id="country" class="form-select">
+                <option value="GLOBAL" selected>🌍 Worldwide / Global (All Regions)</option>
+                <option value="US">🇺🇸 United States (US)</option>
+                <option value="UK">🇬🇧 United Kingdom (UK)</option>
+                <option value="CA">🇨🇦 Canada (CA)</option>
+                <option value="AU">🇦🇺 Australia (AU)</option>
+                <option value="IN">🇮🇳 India (IN)</option>
+                <option value="DE">🇩🇪 Germany (DE)</option>
+                <option value="FR">🇫🇷 France (FR)</option>
+                <option value="SG">🇸🇬 Singapore (SG)</option>
+                <option value="AE">🇦🇪 UAE / Middle East (AE)</option>
+                <option value="JP">🇯🇵 Japan (JP)</option>
+                <option value="BR">🇧🇷 Brazil (BR)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="provider">Discovery Provider</label>
+              <select id="provider" class="form-select">
+                <option value="live_search" selected>🌐 Live Web Search (Real Real-Time Opportunities)</option>
+                <option value="demo">Demo Provider (Synthetic Test Records)</option>
+              </select>
+            </div>
+
+            <div class="form-group" style="justify-content: flex-end;">
+              <label class="form-label">Deep Learning Semantic Scoring</label>
+              <div class="toggle-group">
+                <label class="toggle-switch">
+                  <input type="checkbox" id="use_deep_learning" checked>
+                  <span class="slider"></span>
+                </label>
+                <span style="font-size: 0.85rem; color: var(--text-muted);">Sentence Transformers Embedding</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+            <button type="submit" id="analyze-submit-btn" class="btn btn-primary" style="font-size: 1rem; padding: 0.85rem 1.75rem;">
+              🚀 Find 100 Backlinks (Live Web, Image &amp; PDF)
+            </button>
+            <span style="font-size: 0.82rem; color: var(--text-dim);">
+              Searches resource catalogs, document repos (filetype:pdf), and infographic submission directories.
+            </span>
+          </div>
+        </form>
+
+        <!-- Live Asynchronous Scan Progress Widget (SSE) -->
+        <div id="scan-progress-widget" class="glass-card" style="display: none; margin-top: 1.25rem; border: 1px solid var(--border-glow); background: rgba(99, 102, 241, 0.08);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+            <div style="display: flex; align-items: center; gap: 0.65rem;">
+              <span class="spinner" style="width: 1.15rem; height: 1.15rem;"></span>
+              <span id="scan-progress-stage" style="font-weight: 600; color: #fff; font-size: 0.95rem;">Starting asynchronous discovery worker...</span>
+            </div>
+            <span id="scan-progress-percent" style="font-family: var(--font-heading); font-weight: 700; color: var(--cyan); font-size: 1.1rem;">0%</span>
+          </div>
+          <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.08); border-radius: var(--radius-full); overflow: hidden;">
+            <div id="scan-progress-bar" style="width: 0%; height: 100%; background: linear-gradient(90deg, var(--primary), var(--cyan)); border-radius: var(--radius-full); transition: width 0.35s ease;"></div>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; font-size: 0.78rem; color: var(--text-dim);">
+            <span id="scan-progress-details">Worker dispatching concurrent queries across live web buckets...</span>
+            <span id="scan-progress-id">Scan ID: ...</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Analysis Results Container -->
+      <div id="analyze-results-container" class="glass-card" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
+          <h3 class="card-title" style="margin-bottom: 0;">Ranked Backlink Prospects</h3>
+          <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <a id="export-xlsx-btn" href="#" class="btn btn-sm btn-primary" style="background: linear-gradient(135deg, #10b981, #059669); text-decoration: none;">
+              📊 Export Excel (.xlsx)
+            </a>
+            <a id="export-csv-btn" href="#" class="btn btn-sm btn-secondary" style="text-decoration: none;">
+              📥 Export CSV
+            </a>
+            <a id="export-json-btn" href="#" class="btn btn-sm btn-secondary" target="_blank" style="text-decoration: none;">
+              📋 JSON
+            </a>
+          </div>
+        <div id="analyze-summary"></div>
+
+        <div class="filter-pills-bar" style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1.25rem; margin-bottom: 0.75rem;">
+          <button class="filter-pill active" data-filter="all">All Opportunities (<span id="count-all">0</span>)</button>
+          <button class="filter-pill" data-filter="pdf">📄 PDF Backlinks (<span id="count-pdf">0</span>)</button>
+          <button class="filter-pill" data-filter="image">🖼️ Image &amp; Infographics (<span id="count-image">0</span>)</button>
+          <button class="filter-pill" data-filter="directory">🌐 Directories (<span id="count-directory">0</span>)</button>
+          <button class="filter-pill" data-filter="free">✓ Verified Free (<span id="count-free">0</span>)</button>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Prospect Domain &amp; Page</th>
+                <th>Link Format</th>
+                <th>Cost Status</th>
+                <th>Opportunity Score</th>
+                <th>Metric Breakdown</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="analyze-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 2: Backlink Verifier -->
+    <section id="tab-verify" class="tab-pane">
+      <div class="glass-card">
+        <h2 class="card-title">Real Backlink &amp; HTML Inspector</h2>
+        <p class="card-desc">Verify whether external web pages actually link to your domain, inspect anchor text, dofollow/nofollow status, and detect robots meta tags with SSRF protection.</p>
+
+        <form id="backlink-verify-form">
+          <div class="form-grid" style="grid-template-columns: 2fr 1fr;">
+            <div class="form-group">
+              <label class="form-label" for="verify_urls">Target Web Page URLs (One per line)</label>
+              <textarea id="verify_urls" class="form-textarea" rows="4" placeholder="https://example.org/resources&#10;https://sample.net/directory" required>https://example.org/resources</textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="target_domain">Your Domain / Backlink URL to Detect</label>
+              <input type="text" id="target_domain" class="form-input" placeholder="e.g. techstart.example" value="techstart.example">
+              <span style="font-size: 0.78rem; color: var(--text-dim); margin-top: 0.35rem;">
+                The HTML parser will scan for &lt;a href&gt; tags matching this domain and verify anchor text and dofollow rel attributes.
+              </span>
+            </div>
+          </div>
+
+          <button type="submit" id="verify-submit-btn" class="btn btn-primary">
+            Inspect &amp; Verify Backlinks
+          </button>
+        </form>
+
+        <div id="verify-results-card" class="table-responsive" style="display: none; margin-top: 1.5rem;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Target URL</th>
+                <th>Reachability</th>
+                <th>Backlink Detected</th>
+                <th>Audit Details &amp; Notes</th>
+              </tr>
+            </thead>
+            <tbody id="verify-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 3: CSV Importer -->
+    <section id="tab-csv" class="tab-pane">
+      <div class="glass-card">
+        <h2 class="card-title">Batch Prospect CSV Importer</h2>
+        <p class="card-desc">Import and score large prospect lists from CSV with automatic schema validation and transparent cost verification.</p>
+
+        <div class="dropzone" id="csv-dropzone">
+          <div class="dropzone-icon">📥</div>
+          <h3>Drag and drop your prospect .csv file here</h3>
+          <p style="color: var(--text-muted); font-size: 0.88rem; margin-top: 0.5rem;">or click to browse from your computer (Max 5 MB)</p>
+          <input type="file" id="csv_file_input" accept=".csv" style="display: none;">
+        </div>
+
+        <div id="csv-results-card" style="display: none; margin-top: 2rem;">
+          <h3 class="card-title">Imported &amp; Scored Prospects</h3>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Domain</th>
+                  <th>Cost Status</th>
+                  <th>Score</th>
+                  <th>Reasons / Warnings</th>
+                </tr>
+              </thead>
+              <tbody id="csv-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 4: Scan Archive -->
+    <section id="tab-history" class="tab-pane">
+      <div class="glass-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+          <div>
+            <h2 class="card-title" style="margin-bottom: 0.2rem;">Scan Archive &amp; Exports</h2>
+            <p class="card-desc" style="margin-bottom: 0;">Access, filter, and export all historical domain scans persisted in SQLite.</p>
+          </div>
+          <button class="btn btn-sm btn-secondary" onclick="loadScanHistory()">🔄 Refresh</button>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Scan ID</th>
+                <th>Target Domain</th>
+                <th>Category</th>
+                <th>Found (Free)</th>
+                <th>Timestamp</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="history-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- AI Outreach Modal -->
+  <div class="modal-overlay" id="ai-modal">
+    <div class="modal-content">
+      <button class="modal-close" id="ai-modal-close">&times;</button>
+      <h3 class="card-title" id="ai-modal-domain" style="color: #c084fc;">AI Prospect Analysis</h3>
+      <div id="ai-modal-body"></div>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

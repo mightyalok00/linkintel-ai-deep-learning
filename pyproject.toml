@@ -1,0 +1,18 @@
+[project]
+name = "linkintel-ai"
+version = "2.0.0"
+description = "Deep Learning & AI-Powered SEO Backlink Intelligence Platform"
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [{ name = "LinkIntel Team" }]
+keywords = ["seo", "backlinks", "machine-learning", "fastapi", "deep-learning"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+pythonpath = ["."]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"

@@ -1,0 +1,20 @@
+services:
+  linkintel:
+    build: .
+    container_name: linkintel-app
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_ENV=production
+      - ENABLE_SPAM_MODEL=true
+      - SPAM_MODEL_PATH=models/spam_risk.joblib
+      - ENABLE_GEMINI_EXPLANATIONS=true
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    volumes:
+      - linkintel_data:/app/data
+      - linkintel_db:/app
+    restart: unless-stopped
+
+volumes:
+  linkintel_data:
+  linkintel_db:
